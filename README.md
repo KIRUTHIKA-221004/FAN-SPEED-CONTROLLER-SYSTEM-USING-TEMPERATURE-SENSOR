@@ -3,7 +3,7 @@
 # EXP 1(A) FAN SPEED CONTROLLER SYSTEM USING TEMPERATURE SENSOR
 
 # Aim:
-	To measure the Temperature using DHT11/DHT22/TMP36  sensor with Arduino UNO Board/ESP-32 using Tinker CAD.
+To measure the Temperature using DHT11/DHT22/TMP36  sensor with Arduino UNO Board/ESP-32 using Tinker CAD.
 
 # Hardware / Software Tools required:
 	PC/ Laptop with Internet connection
@@ -13,9 +13,9 @@
 
 # Circuit Diagram:
 
----
-To upload
---
+<img width="1280" height="718" alt="image" src="https://github.com/user-attachments/assets/2d275307-5126-4e4d-8193-1b8e57dba2cd" />
+
+
 
 # Procedure // Modify the procedure based on your circuit
 
@@ -56,13 +56,103 @@ Step 7: Save Your Work
 
 
 # Program
+```
+#include <LiquidCrystal.h>
 
----
-To upload
---
+// initialize the library with the numbers of the interface pins
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+
+int val;
+float Temp;
+int motor = 6 ;
+int speed = 0;
+const int buttonPin = 8; 
+int buttonState = 0; 
+
+void setup()
+{
+ lcd.begin(16,2);
+  pinMode(motor, OUTPUT);
+  
+  
+  analogWrite(motor,speed);
+  lcd.clear();
+  speed = 0;
+  analogWrite(motor,speed);
+  delay(1000);
+  lcd.setCursor(0,0);
+  lcd.print("Temperature");
+  lcd.setCursor(0,1);
+  lcd.print("Controlled");
+  lcd.setCursor(12,1);
+  lcd.print("Fan");
+  delay(1000);
+  lcd.clear();
+  lcd.print("Acmegrade");
+ lcd.setCursor(0,1);
+  lcd.print("Project Batch 6");
+  delay(3000);
+  lcd.clear();
+  lcd.noDisplay(); 
+  pinMode(buttonPin, INPUT);
+  while(!(digitalRead(buttonPin)));
+}
+
+
+
+void loop() {
+   
+    lcd.display(); 
+    val= analogRead(0);
+ 
+   float voltage = val * 5.0;
+ voltage /= 1024.0; 
+  float temperatureC = (voltage - 0.5) * 100 ;
+  lcd.setCursor(0,0);
+  lcd.print("Temp :");
+  lcd.setCursor(8,0);
+  lcd.print(temperatureC);
+  delay(1000);
+  lcd.clear();
+  if(temperatureC>20 && temperatureC<24)
+  {
+    speed=60;
+    analogWrite(motor,speed); 
+    lcd.print("Fan Speed: 25% ");
+    delay(2000);
+    lcd.clear();
+    
+  }
+  
+  if(temperatureC>24 && temperatureC<30)
+  { 
+    speed = 125;
+    analogWrite(motor,speed);
+    lcd.print("Fan Speed: 50% ");
+    delay(2000);
+    lcd.clear();
+  }
+  
+  if(temperatureC>30 && temperatureC<50)
+  { 
+    speed = 250;
+    analogWrite(motor,speed);
+    lcd.print("Fan Speed: 100% ");
+    delay(2000);
+    lcd.clear();
+  }
+  
+  
+   else {
+    lcd.noDisplay();
+   }
+}
+```
+Output
+
+https://github.com/user-attachments/assets/231522e2-bb89-4958-8c4f-6ad0877696b3
 
 # Result
+The temperature and humidity values are measured using DHT11/DHT22/TMP36 sensor with Arduino UNO Board/ESP-32 and Simulated using Tinker CAD.
 
----
-To upload
---
